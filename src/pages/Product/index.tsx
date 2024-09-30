@@ -31,7 +31,7 @@ const Product = () => {
           magnam.
         </p>
       </Section>
-      <Gallery defaultCover={residentEvil} />
+      <Gallery name="jogo teste" defaultCover={residentEvil} />
     </>
   )
 }
