@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import Hero from '../../components/Hero'
 import Section from '../../components/Section'
@@ -5,33 +6,44 @@ import Section from '../../components/Section'
 import Gallery from '../../components/Gallery'
 
 import residentEvil from '../../assets/images/resident.png'
+import { Game } from '../Home'
 
 const Product = () => {
   const { id } = useParams()
 
+  const [game, setGame] = useState<Game>()
+
+  useEffect(() => {
+    fetch(`https://fake-api-tau.vercel.app/api/eplay/jogos/${id}`)
+      .then((res) => res.json())
+      .then((res) => setGame(res))
+  }, [id])
+
+  if (!game) {
+    return <h3>Carregando...</h3>
+  }
+
   return (
     <>
-      <Hero />
+      <Hero game={game} />
       <Section title="Sobre o jogo" background="black">
-        <p>
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti
-          facere magnam vero animi libero sint ducimus placeat! Et, delectus,
-          hic, commodi quo tempora ut amet placeat mollitia temporibus ex
-          magnam.
-        </p>
+        <p>{game.description}</p>
       </Section>
       <Section title="Mais detalhes" background="gray">
         <p>
-          <b>Plataforma:</b> PS5 <br />
-          <b>Desenvolvedor:</b> Avalanche Software <br />
-          <b>Editora:</b> Portkey Game <br />
-          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corrupti
-          facere magnam vero animi libero sint ducimus placeat! Et, delectus,
-          hic, commodi quo tempora ut amet placeat mollitia temporibus ex
-          magnam.
+          <b>Plataforma:</b> {game.details.system} <br />
+          <b>Desenvolvedor:</b> {game.details.developer} <br />
+          <b>Editora:</b> {game.details.publisher} <br />
+          <b>Idiomas:</b> O jogo oferece idiomas como:{' '}
+          {game.details.languages.join(', ')}
+          <br />
         </p>
       </Section>
-      <Gallery name="jogo teste" defaultCover={residentEvil} />
+      <Gallery
+        name={game.name}
+        defaultCover={game.media.cover}
+        items={game.media.gallery}
+      />
     </>
   )
 }
