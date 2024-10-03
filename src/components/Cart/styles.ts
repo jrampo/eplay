@@ -21,9 +21,13 @@ export const CardContainer = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
+  display: none;
   justify-content: flex-end;
   z-index: 1;
+
+  &.is-open {
+    display: flex;
+  }
 `
 
 export const Sidebar = styled.aside`
@@ -100,5 +104,6 @@ export const CardItem = styled.li`
     position: absolute;
     top: 8px;
     right: 0;
+    cursor: pointer;
   }
 `
